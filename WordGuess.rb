@@ -1,14 +1,29 @@
 #--------------------------------------------------------------------------
-# 
+#
 # Script Name: WordGuess.rb
-# Version:     1.0
-# Author:      Jerry Lee Ford, Jr.
-# Date:        April 2010
-# 
+# Version:     1.1
+# Author:      Corey Hicks
+# Date:        31 January 2018
+#
 # Description: This Ruby script demonstrates how to work with regular
-#              expressions through the development of a computer game 
-#              that challenges the player to guess a mystery word after 
+#              expressions through the development of a computer game
+#              that challenges the player to guess a mystery word after
 #              being first allowed to guess 5 consonants and 1 vowel.
+#
+#   This game uses several methods to define the Game class: 3 display methods,
+# a select_word method, 2 get methods, a prompt_for_guess method, and a
+# play_game method. Select word utilizes an array with 40 elements and a random
+# number generator to use the array as a picklist. Both get methods are used to
+# retrieve user input for consonants and vowels with 3 if/else statements that
+# catch potential user errors. prompt_for_guess is passed 4 values in the
+# signature to reveal some of the secret word in reference to the letters that
+# were obtained in the get_consonants and get_vowel methods. Finally, the
+# play_game method is simply used to call all of the other methods.
+#
+#   This week focused heavily on regex. Some of the expressions used can be
+# handled by method calls built into the language itself. However, knowing how
+# to use regex can help when working with characters from languages that are
+# not native to English.
 #
 #--------------------------------------------------------------------------
 
@@ -22,93 +37,100 @@ class Screen
     puts ("\n" * 25)  #Scroll the screen 25 times
     puts "\a"   #Make a little noise to get the player's attention
   end
-  
+
   def pause    #Define a method that pauses the display area
     STDIN.gets  #Execute the STDIN class's gets method to pause script
                 #execution until the player presses the Enter key
   end
-  
+
 end
 
 #Define a class representing the Word Guessing Game
 class Game
- 
+
   #This method displays the game's opening message
   def display_greeting
-  
+
     Console_Screen.cls  #Clear the display area
-  
+
     #Display welcome message
     print "\t\t\tWelcome to the Word Guessing Game!" +
     "\n\n\n\n\n\n\n\n\n\n\n\n\n\nPress Enter to " +
                "continue."
-  
+
     Console_Screen.pause       #Pause the game
 
   end
- 
+
   #Define a method to be used to present game instructions
   def display_instructions
-    
+
     Console_Screen.cls       #Clear the display area
     puts "INSTRUCTIONS:\n\n"  #Display a heading
 
     #Display the game's instructions
-    puts "At the start of each round of play, the game randomly selects"
-    puts "a word that is between five and ten characters long and"
-    puts "challenges you to guess it. Before submitting your guess, you"
-    puts "must specify five consonants and one vowel. If any of these"
-    puts "are used in the word, they will be revealed on the screen,"
-    puts "thereby making it easier for you to guess the secret word.\n\n"
+    puts "This game randomly generates a word that is between five and ten "
+    puts "characters long. It is up to you to guess the secret word! At the "
+    puts "beginning of the game, you will be given the opportunity to choose "
+    puts "five consonants and one vowel. If any of your letters match the "
+    puts "letters in the secret word they will be revealed. All other characters"
+    puts "will be displayed as an underscore. Choose wisely, because you’ll "
+    puts "only get one guess at the secret word!\n\n"
     puts "Good luck!\n\n\n\n\n\n\n\n\n"
     print "Press Enter to continue."
 
     Console_Screen.pause       #Pause the game
-    
+
   end
- 
+
   #Define a method that generates the secret word
   def select_word
-  
-    #Define an array of 20 words from which the game will randomly select
+
+    #Define an array of 40 words from which the game will randomly select
     words = ["W I N D O W", "S T A T I O N", "H A M B U R G E R",
              "E X P R E S S I O N", "W A L L E T", "C A M E R A",
              "A I R P L A N E", "C A N D L E", "C O M P U T E R",
              "P I C T U R E", "F R A M E", "S H E L F", "B O W L I N G",
              "P O L I T E", "S T A T E M E N T", "N E G A T I V E",
              "M E T H O D", "F I S H I N G", "C O M P E N S A T E",
-             "H A P P Y"]
-  
-    #Generate and return a random number between 0 and 19
-    randomNo = rand(19)
-  
+             "H A P P Y", "F O O T B A L L", "S A N D W I C H",
+             "I L L U S I O N", "S K E L E T O N", "S P A G H E T T I",
+             "P H O T O G R A P H", "P U R I F Y", "O T O M A N",
+             "I N C E N S E", "S T A I R C A S E", "C O L O S S E U M",
+             "H O N E Y", "S C U L P T U R E", "M E A T L O A F",
+             "M O T O R C Y C L E", "R E V O L U T I O N", "B L A N K E T",
+             "S L A U G H T E R", "K I T T E N", "S T A M P E D E"]
+
+    #Generate and return a random number between 0 and 39
+    randomNo = rand(39)
+
     #Return a randomly selected word to the calling statement
-    return words[randomNo]  
-    
+    return words[randomNo]
+
   end
- 
+
   #Define a method that collects the player's consonant guesses
   def get_consonants
-  
+
     list = Array.new  #Define an array in which to store the consonants
-   
+
     #Give the player an idea of what is coming
     puts "Before you try to guess the secret word, you must specify " +
          "5 consonants.\n\n"
     print "Press Enter to continue."
-  
+
     Console_Screen.pause      #Pause the game
-  
+
     5.times do  #Iterate 5 times
-    
+
       Console_Screen.cls       #Clear the display area
-    
+
       #Prompt the player to enter a consonant
       print "\nPlease enter a consonant and press Enter. "
-    
+
       input = STDIN.gets  #Collect the player's input
       input.chop!         #Remove the end of line marker
-      
+
       #Only accept consonant characters
       if input !~ /[bcdfghjklmnpqrstvwxyz]/i then
         Console_Screen.cls       #Clear the display area
@@ -117,7 +139,7 @@ class Game
         Console_Screen.pause      #Pause the game
         redo  #Repeat the current iteration of the loop
       end
-      
+
       #Only accept one character of input per guess
       if input.length > 1 then
         Console_Screen.cls       #Clear the display area
@@ -126,40 +148,41 @@ class Game
         Console_Screen.pause      #Pause the game
         redo  #Repeat the current iteration of the loop
       end
-      
+
       #Do not allow the player to submit the same guess twice
       if list.include?(input.upcase) == true then
         Console_Screen.cls       #Clear the display area
+        puts list.inspect.gsub(/"/, "") #display letters the user has entered
         print "Error: You have already guessed " + input + ". Press " +
         "Enter to continue."
         Console_Screen.pause      #Pause the game
         redo  #Repeat the current iteration of the loop
       else
-        list.push(input.upcase)  #Convert the consonant to uppercase and 
+        list.push(input.upcase)  #Convert the consonant to uppercase and
       end                        #add it to the list of consonants
- 
+
     end
-   
+
     return list  #Return the list of consonants to the calling statement
-    
+
   end
- 
+
   #Define a method that collects the player's vowel guesses
   def get_vowel
-  
+
     #Give the player an idea of what is coming
     puts "Before you try to guess the secret word, you must specify " +
     "1 vowel.\n\n"
-  
+
     1.times do  #Iterate 1 time
-      
-      Console_Screen.cls       #Clear the display area     
-      
+
+      Console_Screen.cls       #Clear the display area
+
       #Prompt the player to enter a vowel
       print "\nPlease enter a vowel and press Enter. "
       input = STDIN.gets  #Collect the player's input
       input.chop!         #Remove the end of line marker
-      
+
       #Only accept vowel characters
       if input !~ /[aeiou]/i then
         Console_Screen.cls       #Clear the display area
@@ -168,7 +191,7 @@ class Game
         Console_Screen.pause      #Pause the game
         redo  #Repeat the current iteration of the loop
       end
-      
+
       #Only accept one character of input per guess
       if input.length > 1 then
         Console_Screen.cls       #Clear the display area
@@ -177,50 +200,50 @@ class Game
         Console_Screen.pause      #Pause the game
         redo #Repeat the current iteration of the loop
       end
-      
+
       input = input.upcase  #Convert the vowel to uppercase
       return input  #Return the vowel to the calling statement
-      
+
     end
-  
+
   end
- 
+
   #Define a method that collects player guesses
   def prompt_for_guess(shortWord, word, consonants, vowel)
-  
+
     Console_Screen.cls       #Clear the display area
-   
-    consonants.push(vowel)  #To make things easy, add the vowel to the 
+
+    consonants.push(vowel)  #To make things easy, add the vowel to the
                             #list of consonants
 
     wordArray = word.split(" ") #Split the secret word into an array
-  
-    i = 0  #Initialize index variable to zero 
+
+    i = 0  #Initialize index variable to zero
 
     #Loop once for each letter in the word (stored in an array)
-    wordArray.each do |letter| 
-    
-      match = false  #Initialize the variable with a starting value of false 
-    
+    wordArray.each do |letter|
+
+      match = false  #Initialize the variable with a starting value of false
+
       #Loop once for each consonant stored in the consonants array
       consonants.each do |character|
-        
+
         #Compare the current character from the consonants array to the
-        #current letter in the wordArray array        
+        #current letter in the wordArray array
         if character == letter then
           match = true  #Set variable value to indicate a match
           break  #Terminate loop execution when a match occurs
         end
-   
+
       end
 
-      #If there is no matching character in the consonants array for the 
+      #If there is no matching character in the consonants array for the
       #current letter in the wordArray array, replace that letter in the
       #wordArray with an underscore character
       if match == false then
         wordArray[i] = "_"  #Replace the current character with an
       end                   #underscore
-  
+
       i = i + 1  #Increment the variable's value by 1
 
     end
@@ -231,9 +254,9 @@ class Game
 
     #Allow the player up to three guesses
     3.times do |i|  #i equals 0 on the first iteration of the loop
-        
+
       Console_Screen.cls       #Clear the display area
-    
+
       #Prompt the player to try to guess the secret word
       puts "I am thinking of a word.\n\n\n\n\n\n"
       print "Here is your clue:  " + word + "\n\n\n\n\n\n\n\n"
@@ -241,36 +264,44 @@ class Game
       reply = STDIN.gets  #Collect the player's reply
       reply.chop!         #Remove the end of line marker
       reply = reply.upcase  #Convert the reply to all uppercase
-      
+
       #Analyze the players guess
       if reply == shortWord then  #The player's guessed the secret word
-      
+
         Console_Screen.cls       #Clear the display area
         print "Correct! Press Enter to continue."
         Console_Screen.pause       #Pause the game
         break  #Terminate the execution of the loop
-        
+
       else  #The player did not guess the secret word
-      
+
         Console_Screen.cls       #Clear the display area
-        
+
         #Display a message based on how many turns remain
-        if i == 1 then 
+        if i == 1 then
+          puts "You entered: " + reply.upcase #display user answer
           print "Wrong! You have one guess left. Press Enter to " +
           "try again."
         elsif i == 2
+          puts "You entered: " + reply.upcase #display user answer
+          shortWord = shortWord.downcase #converts word to lowercase
           print "Sorry, you lose.\n\n"
-          print "The word was " + shortWord + ". Press Enter to continue."
+          print "The word was " + shortWord.sub(/^./) {$&.upcase} +
+          #regex reads as follows: substitute "beginning" for "anything"
+            #'contains complete matched text of uppercase= $&.upcase'
+              #method .capitalize would accomplish this as well
+          ". Press Enter to continue."
         else
+          puts "You entered: " + reply.upcase #display user answer
           print "Wrong! Press Enter to try again."
-        end 
-        
+        end
+
         Console_Screen.pause       #Pause the game
-        
-      end 
-       
+
+      end
+
     end
-    
+
   end
 
   #Define a method to control game play
@@ -279,35 +310,35 @@ class Game
     word = select_word  #Call on the method that retrieves a random word
 
     Console_Screen.cls       #Clear the display area
-    
+
     consonants = get_consonants #Call on the method that prompts the player
                                 #to enter a list of consonants
 
     Console_Screen.cls       #Clear the display area
-      
+
     #Call on the method that prompts the player to enter a vowel
-    vowel = get_vowel 
-    
+    vowel = get_vowel
+
     #Remove blank spaces from the word to create a short version of the word
     shortWord = word.gsub(" ", "")
 
     #Call the method that processes player guesses
     prompt_for_guess(shortWord, word, consonants, vowel)
-      
+
     Console_Screen.cls       #Clear the display area
 
   end
 
   #This method displays the information about the Word Guessing game
   def display_credits
-  
+
     Console_Screen.cls  #Clear the display area
-  
+
     #Thank the player and display game information
     puts "\t\t     Thank you for playing the Word Guessing Game.\n\n\n\n"
-    puts "\n\t\t\t Developed by Jerry Lee Ford, Jr.\n\n"
-    puts "\t\t\t\t  Copyright 2010\n\n"
-    puts "\t\t\tURL: http://www.tech-publishing.com\n\n\n\n\n\n\n\n\n\n"
+    puts "\n\t\t\t Developed by Corey Hicks\n\n"
+    puts "\t\t\t\t  Copyright 2018\n\n"
+    puts "\t\t\tURL: http://www.bellevue.edu\n\n\n\n\n\n\n\n\n\n"
 
   end
 
@@ -324,7 +355,7 @@ WordGuess.display_greeting
 
 answer = ""  #Initialize variable and assign it an empty string
 
-#Loop until the player enters y, n, Y, or N and do not accept any 
+#Loop until the player enters y, n, Y, or N and do not accept any
 #other input
 loop do
 
@@ -334,13 +365,20 @@ loop do
   print "Are you ready to play the Word Guessing Game? (y/n): "
 
   answer = STDIN.gets  #Collect the player's answer
-  answer.chop!  #Remove the new line character appended to the 
+  answer.chop!  #Remove the new line character appended to the
                 #string
 
-  #Terminate the loop if valid input was provided
-  break if answer =~ /y|n/i  #Accept upper or lower case input
+  if answer == "h" or answer == "H"
 
-end 
+    #Execute the game class's display_instructions method
+    WordGuess.display_instructions
+
+  end
+
+  #Terminate the loop if valid input was provided
+  break if answer =~ /[yn]/i  #Accept upper or lower case input
+
+end
 
 #Analyze the player's input
 if answer == "n" or answer == "N" #See if the player elected not
@@ -351,13 +389,10 @@ if answer == "n" or answer == "N" #See if the player elected not
   #Invite the player to return and play the game some other time
   puts "Okay, perhaps another time.\n\n"
 
-else  #The player wants to play the game
-
-    #Execute the game class's display_instructions method
-    WordGuess.display_instructions
+else #The player wants to play the game
 
   loop do  #Loop forever
-    
+
     #Execute the Game class's play_game method
     WordGuess.play_game
 
@@ -365,15 +400,22 @@ else  #The player wants to play the game
     print "Enter Q to quit or press any key to play again: "
 
     playAgain = STDIN.gets  #Collect the player's response
-    playAgain.chop!  #Remove the new line character appended to the 
+    playAgain.chop!  #Remove the new line character appended to the
                      #string
-  
+
+    if playAgain == "h" or playAgain == "H"
+
+    #Execute the game class's display_instructions method
+    WordGuess.display_instructions
+
+    end
+
     #Terminate the loop if valid input was provided
-    break if playAgain =~ /Q/i 
-  
+    break if playAgain =~ /Q/i
+
   end
-  
+
   #Call upon the Game class's display_credits method
   WordGuess.display_credits
-  
+
 end
