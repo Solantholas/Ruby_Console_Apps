@@ -1,14 +1,31 @@
 #--------------------------------------------------------------------------
 #
 # Script Name: RPS.rb
-# Version:     1.0
-# Author:      Jerry Lee Ford, Jr.
-# Date:        March 2010
+# Version:     1.1
+# Author:      Corey Hicks
+# Date:        09 February 218
 #
 # Description: This Ruby game s a computerized version of the classic
-#              children�s Rock, Paper, Scissors game, in which the player goes
+#              children's Rock, Paper, Scissors game, in which the player goes
 #              head-to-head against the computer.
 #
+#   This week we introduce three methods into the game class: get_player_move,
+# get_computer_move, and analyze_results. get_player_move asks the user to type
+# an answer of Rock, Paper, or Scissors as their guess for the RPS game. This
+# method has been modified to also accept r/R, s/S, and p/P for ease of play.
+# get_computer_move assights all three guess options to an array, randomly
+# generates a number between 0 and 2 and then assigns the array value in the
+# respected position. Finally, the analyze_results method determines what answer
+# the user and computer chose. This is accomplished by using inner and outer IF
+# statements.
+#
+#   This week focused heavily on advanced object oriented concepts: abstraction,
+# encapsulation, inheritance, and polymorphism. Our reading this week touched
+# on these concepts and our program relied heavily on encapsulation and global
+# variables to accomplish the logic. Encapsulation can be seen with the @choice
+# variable in the get_player_move method. The @choice variable is only
+# accessible in the get_player_move method whereas the global variables are
+# accessible in any method, or class, or even in the main script logic.
 #--------------------------------------------------------------------------
 
 
@@ -85,6 +102,9 @@ class Game
     #Call on the method responsible for determining the results of the game
     result = analyze_results(playerMove, computerMove)
 
+    #CAll on the method responsible for ingrementing the game count
+    game_Count
+
     #Call on the method responsible for displaying the results of the game
     display_results(playerMove, computerMove, result)
 
@@ -101,11 +121,27 @@ class Game
 
       #Prompt the player to select a move
       puts "To make a move, type one of the following and press Enter:\n\n"
+      puts "\a"
       print "[Rock] [Paper] [Scissors]: "
 
       @choice = STDIN.gets  #Collect the player's answer
       @choice.chop!  #Remove any extra characters appended to
                             #the string
+
+      #accept input of r or R and convert string to Rock
+      if @choice =~ /r|R/
+        then @choice = "Rock"
+      end
+
+      #accept input of p or P and convert string to Paper
+      if @choice =~ /p|P/
+        then @choice = "Paper"
+      end
+
+      #accept input of s or S and convert string to Scissors
+      if @choice =~ /s|S/
+        then @choice = "Scissors"
+      end
 
       #Terminate the loop if valid input was provided
       break if @choice  =~ /Rock|Paper|Scissors/i
@@ -138,23 +174,50 @@ class Game
 
     #Analyze the results of the game when the player selects ROCK
     if player == "ROCK" then
-      return "Player wins!" if computer == "SCISSORS"
-      return "Tie!" if computer == "ROCK"
-      return "Computer wins!" if computer == "PAPER"
+       if computer == "SCISSORS" then
+         $wins += 1
+         return "Rock crushes Scissors. Player wins!"
+       end
+       if computer == "ROCK"
+         $tied += 1
+         return "Rock equals Rock. Tie!"
+       end
+       if computer == "PAPER"
+         $lost += 1
+         return "Rock is covered by Paper. Computer wins!"
+       end
     end
 
     #Analyze the results of the game when the player selects PAPER
     if player == "PAPER" then
-      return "Player wins!" if computer == "ROCK"
-      return "Tie!" if computer == "PAPER"
-      return "Computer wins!" if computer == "SCISSORS"
+       if computer == "ROCK" then
+         $wins += 1
+         return "Paper covers Rock. Player wins!"
+       end
+       if computer == "PAPER"
+         $tied += 1
+         return "Paper equals Paper. Tie!"
+       end
+       if computer == "SCISSORS"
+         $lost += 1
+         return "Paper is cut by Scissors. Computer wins!"
+       end
     end
 
     #Analyze the results of the game when the player selects SCISSORS
     if player == "SCISSORS" then
-      return "Player wins!" if computer == "PAPER"
-      return "Tie!" if computer == "SCISSORS"
-      return "Computer wins!" if computer == "ROCK"
+       if computer == "PAPER" then
+         $wins += 1
+         return "Scissors cut Paper. Player wins!"
+       end
+       if computer == "SCISSORS"
+         $tied += 1
+         return "Scissors equals Scissors. Tie!"
+       end
+       if computer == "ROCK"
+         $lost += 1
+         return "Scissors are crushed by Rock. Computer wins!"
+       end
     end
 
   end
@@ -169,10 +232,23 @@ class Game
     puts "\n\n\t\t\tPlayer's move:    " + player
     puts "\n\n\t\t\tComputer's move:  " + computer
     puts "\n\n\t\t\tResult:           " + result
+    puts "\n\n\t\t\tGames played:     #{$gameCount}"
+    puts "\n\n\t\t\tWins:             #{$wins}"
+    puts "\n\n\t\t\tLosses:           #{$lost}"
+    puts "\n\n\t\t\tTies:             #{$tied}"
     puts "\n\n\t\t\t================================"
     puts "\n\n\n\n"
+    puts "\a"
     print "Press Enter to continue. "
     Console_Screen.pause       #Pause the game
+
+  end
+
+  #define the method responsible for calculating the number of game plays
+  def game_Count
+
+    #increments the gameCount global variable by 1
+      $gameCount += 1
 
   end
 
@@ -184,9 +260,9 @@ class Game
 
     #Thank the player and display game information
     puts "\t     Thank you for playing the Rock, Paper, Scissors game.\n\n\n\n"
-    puts "\n\t\t\t Developed by Jerry Lee Ford, Jr.\n\n"
-    puts "\t\t\t\t  Copyright 2010\n\n"
-    puts "\t\t\tURL: http://www.tech-publishing.com\n\n\n\n\n\n\n\n\n\n"
+    puts "\n\t\t\t Developed by Corey Hicks\n\n"
+    puts "\t\t\t\t  Copyright 2018\n\n"
+    puts "\t\t\tURL: http://www.bellevue.edu\n\n\n\n\n\n\n\n\n\n"
 
   end
 
@@ -194,6 +270,11 @@ end
 
 
 # Main Script Logic -------------------------------------------------------
+
+$gameCount = 0
+$wins = 0
+$lost = 0
+$tied = 0
 
 Console_Screen = Screen.new  #Instantiate a new Screen object
 RPS = Game.new                    #Instantiate a new Game object
