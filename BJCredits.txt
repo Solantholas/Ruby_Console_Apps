@@ -1,0 +1,25 @@
+		Thank you for playing the Ruby Blackjack game.
+
+
+
+
+			Developed by Corey Hicks
+
+
+				Copyright 2018
+
+			https://www.bellevue.edu
+
+
+
+
+
+
+
+
+
+
+
+
+
+Press Enter to continue.

@@ -1,0 +1,23 @@
+INSTRUCTIONS:
+
+
+This game is based on the Blackjack card game, where the
+objective is to beat the dealer by acquiring cards that total
+higher than the dealer's cards without going over 21. In this
+version, the player and dealer are each dealt an initial card. The
+player is then prompted to draw additional cards. The player
+may draw as many additional cards as desired, as long as the
+player's hand adds up to less than 21. If the player's hand goes
+over 21, the player busts and the dealer automatically
+wins. Once the player decides to hold, it is the dealer's
+turn. The dealer continues to add new cards to his hand
+until it adds up to 17 or more or the dealer busts. Once the
+dealer's hand is complete, the game analyzes the player's hand
+and the dealer's hand to determine the results of the game.
+
+
+
+
+
+
+Press Enter to continue.
